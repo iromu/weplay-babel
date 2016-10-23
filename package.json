@@ -1,0 +1,16 @@
+{
+  "name": "weplay-babel",
+  "version": "0.0.1",
+  "description": "",
+  "dependencies": {
+    "blob": "0.0.4",
+    "debug": "2.2.0",
+    "forwarded-for": "1.0.1",
+    "redis": "2.6.2",
+    "socket.io-client": "1.5.0",
+    "socket.io-redis": "1.1.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
