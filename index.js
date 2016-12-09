@@ -1,5 +1,6 @@
 'use strict';
 
+const logger = require('weplay-common').logger('weplay-babel');
 const cio = require('socket.io-client');
 const forwarded = require('forwarded-for');
 process.title = 'weplay-babel';
@@ -8,14 +9,14 @@ let url = process.env.WEPLAY_IO_URL || 'http://localhost:3001';
 if ( !url.split(':')[2]) {
     url = url + 8081;
 }
-console.log('io connecting to ', url);
+logger.info('io connecting to ', url);
 const io = cio.connect(url);
 
 const regex = new RegExp(/^(up|down|left|right|a|b|select|start)$/i);
 const throttle = process.env.WEPLAY_IP_THROTTLE || 100;
 
 // redis queries instance
-const redis = require('./redis')();
+const redis = require('weplay-common').redis();
 
 const keys = {
     right: 0,
@@ -51,11 +52,11 @@ function parse(msg, sender) {
             }
         )
         .map(command => {
-            console.log('command ', command.toLowerCase());
+            logger.info('command ', command.toLowerCase());
             return command.toLowerCase()
         })
         .forEach(key => {
-            console.log('key ', key);
+            logger.info('key ', key);
             broadcastMove(key, sender);
         });
 }
