@@ -30,7 +30,6 @@ const keys = {
 };
 
 
-// send chat mesages
 io.on('message', (msg, sender) => {
     redis.get(`weplay:move-last:${sender}`, (err, last) => {
         if (last) {
