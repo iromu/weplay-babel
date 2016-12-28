@@ -10,7 +10,8 @@
     "socket.io-redis": "1.1.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "lint": "./node_modules/weplay-common/node_modules/.bin/eslint report ."
   },
   "engines": {
     "node": ">=7.0.0"
