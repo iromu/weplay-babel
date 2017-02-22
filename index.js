@@ -1,23 +1,24 @@
 'use strict';
 
-var cio = require('socket.io-client');
-var forwarded = require('forwarded-for');
+const logger = require('weplay-common').logger('weplay-babel');
+const cio = require('socket.io-client');
+const forwarded = require('forwarded-for');
 process.title = 'weplay-babel';
-var url = process.env.WEPLAY_IO_URL || 'http://localhost:3001';
+let url = process.env.WEPLAY_IO_URL || 'http://localhost:3001';
 
 if ( !url.split(':')[2]) {
     url = url + 8081;
 }
-console.log('connecting to ', url);
-var io = cio.connect(url);
+logger.info('io connecting to ', url);
+const io = cio.connect(url);
 
 const regex = new RegExp(/^(up|down|left|right|a|b|select|start)$/i);
-var throttle = process.env.WEPLAY_IP_THROTTLE || 100;
+const throttle = process.env.WEPLAY_IP_THROTTLE || 100;
 
 // redis queries instance
-var redis = require('./redis')();
+const redis = require('weplay-common').redis();
 
-var keys = {
+const keys = {
     right: 0,
     left: 1,
     up: 2,
@@ -29,33 +30,32 @@ var keys = {
 };
 
 
-// send chat mesages
-io.on('message', function (msg, sender) {
-    redis.get('weplay:move-last:' + sender, function (err, last) {
+io.on('message', (msg, sender) => {
+    redis.get(`weplay:move-last:${sender}`, (err, last) => {
         if (last) {
             last = last.toString();
             if (Date.now() - last < throttle) {
                 return;
             }
         }
-        redis.set('weplay:move-last:' + sender, Date.now());
+        redis.set(`weplay:move-last:${sender}`, Date.now());
         parse(msg, sender);
     });
 });
 
 function parse(msg, sender) {
     msg.split(' ')
-        .filter(function (command) {
-                var result = regex.exec(command);
+        .filter(command => {
+                const result = regex.exec(command);
                 return result ? result[1] : false;
             }
         )
-        .map(function (command) {
-            console.log('command ', command.toLowerCase());
+        .map(command => {
+            logger.info('command ', command.toLowerCase());
             return command.toLowerCase()
         })
-        .forEach(function (key) {
-            console.log('key ', key);
+        .forEach(key => {
+            logger.info('key ', key);
             broadcastMove(key, sender);
         });
 }
