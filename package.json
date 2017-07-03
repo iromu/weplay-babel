@@ -5,9 +5,10 @@
   "dependencies": {
     "blob": "0.0.4",
     "forwarded-for": "1.0.1",
-    "weplay-common": "iromu/weplay-common",
+    "lodash": "^4.17.4",
     "socket.io-client": "1.5.0",
-    "socket.io-redis": "1.1.1"
+    "socket.io-redis": "1.1.1",
+    "weplay-common": "iromu/weplay-common#develop"
   },
   "scripts": {
     "start": "node index.js",
