@@ -6,9 +6,9 @@
     "blob": "0.0.4",
     "forwarded-for": "1.0.1",
     "lodash": "^4.17.4",
-    "socket.io-client": "1.5.0",
-    "socket.io-redis": "1.1.1",
-    "weplay-common": "iromu/weplay-common#develop"
+    "socket.io-client": "^2.0.3",
+    "socket.io-redis": "^5.1.0",
+    "weplay-common": "github:iromu/weplay-common#develop"
   },
   "scripts": {
     "start": "node index.js",
