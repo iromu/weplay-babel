@@ -1,6 +1,6 @@
 'use strict'
 
-const logger = require('weplay-common').logger('weplay-babel')
+const logger = LoggerFactory.get('weplay-babel')
 const cio = require('socket.io-client')
 
 process.title = 'weplay-babel'
